@@ -1,4 +1,3 @@
-#include <iostream>
 #include "NavigationComponent.h"
 
 void NavigationComponent::setup() {
@@ -10,7 +9,7 @@ void NavigationComponent::loop() {
 
   Game *game = gameObject->getGame();
   std::map<int, bool> keys = game->getKeys();
-  Position position = gameObject->getGame()->getCameraPosition();
+  Position position = gameObject->getPosition();
 
   if (keys[SDLK_LEFT])
     position.x -= 5;
@@ -21,7 +20,7 @@ void NavigationComponent::loop() {
   if (keys[SDLK_DOWN])
     position.y += 5;
 
-  gameObject->getGame()->setCameraPosition(position);
+  gameObject->setPosition(position);
 
 }
 

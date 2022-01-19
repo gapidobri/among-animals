@@ -1,4 +1,3 @@
-#include <iostream>
 #include "CollisionComponent.h"
 
 void CollisionComponent::setup() {
@@ -10,17 +9,17 @@ void CollisionComponent::loop() {
 
   std::vector<GameObject *> gameObjects = gameObject->getGame()->getGameObjects();
 
-  Position a = gameObject->getPosition();
+  Position ap = gameObject->getPosition();
   Size as = gameObject->getSize();
 
   collisions.clear();
 
   for (auto object: gameObjects) {
-    Position b = object->getPosition();
+    Position bp = object->getPosition();
     Size bs = object->getSize();
 
-    bool collX = a.x + as.width >= b.x && b.x + bs.width >= a.x;
-    bool collY = a.y + as.height >= b.y && b.y + bs.height >= a.y;
+    bool collX = ap.x + as.width >= bp.x && bp.x + bs.width >= ap.x;
+    bool collY = ap.y + as.height >= bp.y && bp.y + bs.height >= ap.y;
 
     if (collX && collY && object != gameObject)
       collisions.push_back(object);

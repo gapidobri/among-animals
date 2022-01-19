@@ -2,10 +2,10 @@
 #include "engine/GameObject/GameObject.h"
 #include "engine/Game/Game.h"
 #include "engine/components/TextureComponent/TextureComponent.h"
-#include "engine/components/FixedPositionComponent/FixedPositionComponent.h"
 #include "engine/components/CameraComponent/CameraComponent.h"
 #include "engine/components/NavigationComponent/NavigationComponent.h"
 #include "engine/components/CollisionComponent/CollisionComponent.h"
+#include "engine/components/PhysicsComponent/PhysicsComponent.h"
 
 int main() {
 
@@ -13,23 +13,22 @@ int main() {
 
   auto *game = new Game();
 
-  auto *camera = new GameObject();
-  camera->registerComponent(new CameraComponent());
-  game->registerGameObject(camera);
+  auto *background = new GameObject();
+  background->registerComponent(new TextureComponent("background.jpeg"));
+  background->setSize(Size{200, 200});
+  game->registerGameObject(background);
 
-  auto *aiken = new GameObject();
-  aiken->registerComponent(new TextureComponent());
+  auto *aiken = new GameObject(100, 100);
+  aiken->registerComponent(new TextureComponent("aiken.png"));
+  aiken->registerComponent(new PhysicsComponent());
   game->registerGameObject(aiken);
 
-  auto *aiken2 = new GameObject(200, 150);
-  aiken2->registerComponent(new TextureComponent());
-  game->registerGameObject(aiken2);
-
   auto *player = new GameObject();
-  player->registerComponent(new TextureComponent());
+  player->registerComponent(new TextureComponent("aiken.png"));
   player->registerComponent(new NavigationComponent());
   player->registerComponent(new CollisionComponent());
-  player->registerComponent(new FixedPositionComponent(400, 270));
+  player->registerComponent(new PhysicsComponent());
+  player->registerComponent(new CameraComponent());
   game->registerGameObject(player);
 
   game->start();

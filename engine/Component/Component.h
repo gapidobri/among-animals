@@ -4,7 +4,13 @@
 #include "../GameObject/GameObject.h"
 
 enum class ComponentType {
-  Component, NavigationComponent, TextureComponent, FixedPositionComponent, CameraComponent, CollisionComponent
+  Component,
+  NavigationComponent,
+  TextureComponent,
+  FixedPositionComponent,
+  CameraComponent,
+  CollisionComponent,
+  PhysicsComponent
 };
 
 class Component {

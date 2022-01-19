@@ -7,5 +7,6 @@ struct Size {
 
 public:
   Size();
+  Size(int, int);
   explicit Size(SDL_Rect);
 };

@@ -37,7 +37,7 @@ void GameObject::setPosition(Position _position) {
 
 Position GameObject::getRenderPosition() {
   Position cameraPosition = game->getCameraPosition();
-  return Position{position.x - cameraPosition.x, position.y - cameraPosition.y};
+  return position - cameraPosition + Position{500 - size.width, 325 - size.height};
 }
 
 Game *GameObject::getGame() {

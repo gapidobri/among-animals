@@ -24,6 +24,8 @@ void Game::start() {
   quit = false;
   SDL_Event event;
 
+  Uint32 a, b, delta;
+
   while (!quit) {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
@@ -43,12 +45,21 @@ void Game::start() {
       }
     }
 
-    SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
-    SDL_RenderClear(sdlRenderer);
+    a = SDL_GetTicks();
+    delta = a - b;
 
-    loopGameObjects();
+    if (delta > 1000 / 60.0) {
 
-    SDL_RenderPresent(sdlRenderer);
+      b = a;
+
+      SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
+      SDL_RenderClear(sdlRenderer);
+
+      loopGameObjects();
+
+      SDL_RenderPresent(sdlRenderer);
+
+    }
 
   }
 
@@ -59,14 +70,12 @@ void Game::start() {
 }
 
 void Game::handleWindowEvent(SDL_Event event) {
-
   switch (event.window.event) {
     case SDL_WINDOWEVENT_CLOSE:
       std::cout << "Exiting game\n";
       quit = true;
       return;
   }
-
 }
 
 // Tnx Aiken

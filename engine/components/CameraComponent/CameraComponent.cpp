@@ -5,8 +5,9 @@ void CameraComponent::setup() {
 }
 
 void CameraComponent::loop() {
-
   Component::loop();
+
+  gameObject->getGame()->setCameraPosition(gameObject->getPosition());
 
 }
 

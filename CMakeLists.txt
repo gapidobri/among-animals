@@ -32,6 +32,6 @@ add_executable(
         engine/components/FixedPositionComponent/FixedPositionComponent.h
         engine/components/CameraComponent/CameraComponent.cpp
         engine/components/CameraComponent/CameraComponent.h
-        engine/Size/Size.h engine/Size/Size.cpp engine/Position/Position.cpp engine/components/CollisionComponent/CollisionComponent.cpp engine/components/CollisionComponent/CollisionComponent.h)
+        engine/Size/Size.h engine/Size/Size.cpp engine/Position/Position.cpp engine/components/CollisionComponent/CollisionComponent.cpp engine/components/CollisionComponent/CollisionComponent.h engine/components/PhysicsComponent/PhysicsComponent.cpp engine/components/PhysicsComponent/PhysicsComponent.h)
 
 target_link_libraries(among_animals SDL2main SDL2 SDL2_image)
