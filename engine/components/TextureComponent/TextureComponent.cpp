@@ -14,6 +14,29 @@ TextureComponent::TextureComponent(const char *filename, bool tile) {
   this->tile = tile;
 }
 
+TextureComponent::TextureComponent(const char *filename, int scale, bool tile) {
+  strcat(this->path, "../assets/");
+  strcat(this->path, filename);
+  this->scale = scale;
+  this->tile = tile;
+}
+
+TextureComponent::TextureComponent(const char *filename, int scale, Bounds tileBounds) {
+  strcat(this->path, "../assets/");
+  strcat(this->path, filename);
+  this->scale = scale;
+  this->tile = true;
+  this->tileBounds = tileBounds;
+}
+
+TextureComponent::TextureComponent(const char *filename, int scale, Position position, Size size) {
+  strcat(this->path, "../assets/");
+  strcat(this->path, filename);
+  this->scale = scale;
+  this->tile = true;
+  this->tileBounds = {position.x, position.x + size.width, position.y, position.y + size.height};
+}
+
 void TextureComponent::setup() {
   Component::setup();
 
@@ -24,39 +47,57 @@ void TextureComponent::setup() {
     std::cout << "Texture load failed\n" << IMG_GetError() << '\n';
   }
 
-  Size size = gameObject->getSize();
+  int width, height;
+  SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 
-  if (size.height == 0 && size.width == 0) {
-    int width, height;
-    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+  if (!tile)
+    gameObject->setSize({width * scale, height * scale});
 
-    gameObject->setSize(Size{width, height});
-  }
+  tileSize = {width, height};
 }
 
 void TextureComponent::loop() {
 
   Component::loop();
 
-  auto position = gameObject->getRenderPosition();
+  auto renderPosition = gameObject->getRenderPosition();
+  auto windowSize = gameObject->getGame()->getWindowSize();
+  auto cameraPosition = gameObject->getGame()->getCameraPosition() - windowSize / 2;
+
+  Bounds bounds = tileBounds;
 
   if (tile) {
 
-    Size size = gameObject->getSize();
+    int distX = tileBounds.maxX - tileBounds.minX;
+    int distY = tileBounds.maxY - tileBounds.minY;
 
-    int xStartOffset = (position.x / size.width + 1) * -1;
-    int xEndOffset = ((1000 - position.x) / size.width + 1);
+    if (!distX) {
+      bounds.minX = (cameraPosition.x / tileSize.width * tileSize.width) - 2 * tileSize.width;
+      bounds.maxX = cameraPosition.x + windowSize.width + 2 * tileSize.width;
+      distX = bounds.maxX - bounds.minX;
+    }
 
-    int yStartOffset = (position.y / size.height + 1) * -1;
-    int yEndOffset = ((650 - position.y) / size.height + 1);
+    if (!distY) {
+      bounds.minY = (cameraPosition.y / tileSize.height * tileSize.height) - 2 * tileSize.height;
+      bounds.maxY = cameraPosition.y + windowSize.height + 2 * tileSize.height;
+      distY = bounds.maxY - bounds.minY;
+    }
 
-    for (int x = xStartOffset; x < xEndOffset; x++)
-      for (int y = yStartOffset; y < yEndOffset; y++)
-        render(position.x + size.width * x, position.y + size.height * y);
+    int countX = distX / tileSize.width;
+    int countY = distY / tileSize.height;
+
+    for (int x = 0; x < countX; x++) {
+      for (int y = 0; y < countY; y++) {
+        render(renderPosition.x + tileSize.width * x, renderPosition.y + tileSize.height * y);
+      }
+    }
+
+    gameObject->setPosition({bounds.minX, bounds.minY});
+    gameObject->setSize({countX * tileSize.width, countY * tileSize.height});
 
   } else {
 
-    render(position.x, position.y);
+    render(renderPosition.x, renderPosition.y);
 
   }
 
@@ -66,11 +107,15 @@ void TextureComponent::render(int x, int y) {
 
   Size size = gameObject->getSize();
 
+  int width, height;
+  SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+
   SDL_Rect rect;
-  rect.x = x;
-  rect.y = y;
-  rect.w = size.width;
-  rect.h = size.height;
+
+  if (tile)
+    rect = {x, y, width, height};
+  else
+    rect = {x, y, size.width, size.height};
 
   SDL_RenderCopy(renderer, texture, nullptr, &rect);
 

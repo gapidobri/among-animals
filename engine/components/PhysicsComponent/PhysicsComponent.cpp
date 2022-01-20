@@ -33,8 +33,8 @@ void PhysicsComponent::loop() {
 
   bool isColliding = collisionComponent != nullptr && collisionComponent->isColliding();
 
-  // Friction
-  if (position.y >= 300 || isColliding)
+  // Apply friction if object is colliding
+  if (isColliding)
     speed *= 0.9;
 
   double speedX = speed * std::cos(direction);
@@ -42,54 +42,33 @@ void PhysicsComponent::loop() {
 
   std::vector<GameObject *> collisions;
   if (collisionComponent) {
-    collisions = collisionComponent->getCollisions(Position{0, (int) speedY});
+    collisions = collisionComponent->getCollisions(Position{(int) speedX, (int) speedY});
     isColliding = !collisions.empty();
   }
 
-  double calcBounce = bounciness;
-  for (auto &collision: collisions) {
-    auto *physicsComponent = collision->getComponentOfType<PhysicsComponent>();
-    if (physicsComponent) {
-      calcBounce += physicsComponent->bounciness;
-      calcBounce /= 2;
-    }
-  }
+  // Remove speed if to low
+//  if (speedX < 0.3 && speedX > -0.3)
+//    speedX = 0;
+//
+//  if (speedY < 0.3 && speedY > -0.3)
+//    speedY = 0;
 
-  if (speedX < 0.3 && speedX > -0.3)
-    speedX = 0;
+  if (isColliding && collisionComponent) {
 
-  if (speedY < 0.3 && speedY > -0.3)
-    speedY = 0;
-
-  if (position.y + speedY >= 300 || isColliding) {
-
-    Position thisCenter = gameObject->getCenterPosition();
-    Size thisHalfSize = gameObject->getSize() / 2;
-
-    // Calculate bounces for all collisions
     for (auto &collision: collisions) {
+      double calcBounce = bounciness / 2;
+      auto *physicsComponent = collision->getComponentOfType<PhysicsComponent>();
+      if (physicsComponent)
+        calcBounce = (bounciness + physicsComponent->bounciness) / 2;
 
-      // Get the collision side
-      Position targetCenter = collision->getCenterPosition();
-      Size targetHalfSize = collision->getSize() / 2;
-      Position diff = thisCenter - targetCenter;
-      Position minDist = thisHalfSize + targetHalfSize;
-      Position depth = {diff.x > 0 ? minDist.x - diff.x : -minDist.x - diff.x,
-                        diff.y > 0 ? minDist.y - diff.y : -minDist.y - diff.y};
+      Position depth = collisionComponent->getCollisionDepth(collision);
 
-      if (depth.x != 0 && depth.y != 0) {
-        if (std::abs(depth.x) < std::abs(depth.y))
-          // Left / Right collision
-          speedX *= -calcBounce;
-        else {
-          // Top / Bottom collision
-          speedY *= -calcBounce;
-
-          // Collision force (counter gravity)
-          speedY -= 0.6;
-        }
+      if (depth.x < depth.y)
+        speedX *= -calcBounce;
+      else {
+        speedY *= -calcBounce;
+        speedY -= 0.6;
       }
-
     }
 
   }
@@ -99,19 +78,29 @@ void PhysicsComponent::loop() {
 
   speed = std::sqrt(std::pow(speedX, 2) + std::pow(speedY, 2));
 
-  direction = calcDirection(speedX, speedY);
-  Position renderPosition = gameObject->getRenderPosition();
+  std::cout << speedY << '\n';
 
-  // DEBUG
+  if (speedY == 0) {
+
+    SDL_Rect rect{100, 100, 100, 100};
+    SDL_RenderFillRect(getRenderer(), &rect);
+
+  }
+
+  direction = calcDirection(speedX, speedY);
+
+  // DEBUG >>
+
+  Position renderPosition = gameObject->getRenderPosition();
 
   SDL_SetRenderDrawColor(getRenderer(), 0, 255, 0, 255);
 
   SDL_RenderDrawLineF(getRenderer(), (float) renderPosition.x, (float) renderPosition.y,
                       (float) (renderPosition.x + 5 * speedX), (float) (renderPosition.y + 5 * speedY));
 
-  // DEBUG
+  // >> DEBUG
 
-  gameObject->setPosition(position + Position{(int) round(speedX), (int) round(speedY)});
+  gameObject->setPosition(position + Position((int) round(speedX), (int) round(speedY)));
 
 }
 

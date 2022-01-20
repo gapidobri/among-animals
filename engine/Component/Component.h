@@ -12,6 +12,7 @@ enum class ComponentType {
   CollisionComponent,
   PhysicsComponent,
   TileComponent,
+  BackgroundComponent,
 };
 
 class Component {

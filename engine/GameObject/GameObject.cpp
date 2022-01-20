@@ -26,6 +26,10 @@ void GameObject::setup() {
 void GameObject::loop() {
   for (auto &component: components)
     component->loop();
+
+  SDL_SetRenderDrawColor(getRenderer(), 0, 255, 0, 255);
+  SDL_Rect r{getRenderPosition().x, getRenderPosition().y, size.width, size.height};
+  SDL_RenderDrawRect(getRenderer(), &r);
 }
 
 Position GameObject::getPosition() {
@@ -42,7 +46,8 @@ void GameObject::setPosition(Position _position) {
 
 Position GameObject::getRenderPosition() {
   Position cameraPosition = game->getCameraPosition();
-  return position - cameraPosition + Position{500, 325};
+  Size windowSize = game->getWindowSize();
+  return position - cameraPosition + windowSize / 2;
 }
 
 Game *GameObject::getGame() {

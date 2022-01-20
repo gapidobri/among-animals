@@ -170,6 +170,13 @@ build CMakeFiles/among_animals.dir/engine/Bounds/Bounds.cpp.o: CXX_COMPILER__amo
   OBJECT_DIR = CMakeFiles/among_animals.dir
   OBJECT_FILE_DIR = CMakeFiles/among_animals.dir/engine/Bounds
 
+build CMakeFiles/among_animals.dir/engine/components/BackgroundComponent/BackgroundComponent.cpp.o: CXX_COMPILER__among_animals_Debug /Users/gapi/repos/among-animals/engine/components/BackgroundComponent/BackgroundComponent.cpp || cmake_object_order_depends_target_among_animals
+  DEP_FILE = CMakeFiles/among_animals.dir/engine/components/BackgroundComponent/BackgroundComponent.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=12.0 -std=gnu++14
+  INCLUDES = -I/opt/homebrew/opt/sdl2/include -I/opt/homebrew/opt/sdl2_image/include -I/opt/homebrew/opt/sdl2_ttf/include -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2
+  OBJECT_DIR = CMakeFiles/among_animals.dir
+  OBJECT_FILE_DIR = CMakeFiles/among_animals.dir/engine/components/BackgroundComponent
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target among_animals
@@ -178,7 +185,7 @@ build CMakeFiles/among_animals.dir/engine/Bounds/Bounds.cpp.o: CXX_COMPILER__amo
 #############################################
 # Link the executable among_animals
 
-build among_animals: CXX_EXECUTABLE_LINKER__among_animals_Debug CMakeFiles/among_animals.dir/main.cpp.o CMakeFiles/among_animals.dir/engine/Game/Game.cpp.o CMakeFiles/among_animals.dir/engine/GameObject/GameObject.cpp.o CMakeFiles/among_animals.dir/engine/Component/Component.cpp.o CMakeFiles/among_animals.dir/engine/components/NavigationComponent/NavigationComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/TextureComponent/TextureComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/FixedPositionComponent/FixedPositionComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/CameraComponent/CameraComponent.cpp.o CMakeFiles/among_animals.dir/engine/Size/Size.cpp.o CMakeFiles/among_animals.dir/engine/Position/Position.cpp.o CMakeFiles/among_animals.dir/engine/components/CollisionComponent/CollisionComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/PhysicsComponent/PhysicsComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/TileComponent/TileComponent.cpp.o CMakeFiles/among_animals.dir/engine/Bounds/Bounds.cpp.o
+build among_animals: CXX_EXECUTABLE_LINKER__among_animals_Debug CMakeFiles/among_animals.dir/main.cpp.o CMakeFiles/among_animals.dir/engine/Game/Game.cpp.o CMakeFiles/among_animals.dir/engine/GameObject/GameObject.cpp.o CMakeFiles/among_animals.dir/engine/Component/Component.cpp.o CMakeFiles/among_animals.dir/engine/components/NavigationComponent/NavigationComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/TextureComponent/TextureComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/FixedPositionComponent/FixedPositionComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/CameraComponent/CameraComponent.cpp.o CMakeFiles/among_animals.dir/engine/Size/Size.cpp.o CMakeFiles/among_animals.dir/engine/Position/Position.cpp.o CMakeFiles/among_animals.dir/engine/components/CollisionComponent/CollisionComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/PhysicsComponent/PhysicsComponent.cpp.o CMakeFiles/among_animals.dir/engine/components/TileComponent/TileComponent.cpp.o CMakeFiles/among_animals.dir/engine/Bounds/Bounds.cpp.o CMakeFiles/among_animals.dir/engine/components/BackgroundComponent/BackgroundComponent.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=12.0
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/opt/sdl2/lib -Wl,-rpath,/opt/homebrew/opt/sdl2_image/lib -Wl,-rpath,/opt/homebrew/opt/sdl2_ttf/lib  -lSDL2main  -lSDL2  -lSDL2_image  -lSDL2_ttf
   LINK_PATH = -L/opt/homebrew/opt/sdl2/lib   -L/opt/homebrew/opt/sdl2_image/lib   -L/opt/homebrew/opt/sdl2_ttf/lib

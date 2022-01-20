@@ -6,26 +6,34 @@
 #include "engine/components/NavigationComponent/NavigationComponent.h"
 #include "engine/components/CollisionComponent/CollisionComponent.h"
 #include "engine/components/PhysicsComponent/PhysicsComponent.h"
+#include "engine/components/BackgroundComponent/BackgroundComponent.h"
 
 int main() {
 
   std::cout << "Starting game\n";
 
-  auto *game = new Game();
 
-//  auto *background = new GameObject(0, 400);
-//  background->registerComponent(new TextureComponent("background.jpeg", true));
-//  game->registerGameObject(background);
+  auto *game = new Game({1280, 720});
 
-  for (int i = 0; i < 10; i++) {
-    auto *platform = new GameObject(600 * i, -50 * i + 250);
-    platform->registerComponent(new TextureComponent("floor.png"));
-    platform->registerComponent(new CollisionComponent());
-    platform->registerComponent(new PhysicsComponent(false, 0.5));
-    game->registerGameObject(platform);
-  }
+  auto *background = new GameObject(0, 400);
+  background->registerComponent(new BackgroundComponent("background/1.png", 0.1));
+  background->registerComponent(new BackgroundComponent("background/2.png", 0.2));
+  background->registerComponent(new BackgroundComponent("background/3.png", 0.3));
+  background->registerComponent(new BackgroundComponent("background/4.png", 0.4));
+  background->registerComponent(new BackgroundComponent("background/5.png", 0.5));
+  game->registerGameObject(background);
 
-  auto *player = new GameObject();
+  auto *floor = new GameObject();
+  floor->registerComponent(new TextureComponent("tile.png", 1, {0, 0, 0, 500}));
+  floor->registerComponent(new CollisionComponent());
+  game->registerGameObject(floor);
+
+  auto *platform = new GameObject(0, 0);
+  platform->registerComponent(new TextureComponent("IndustrialTile_50.png", 1, {200, -200}, {300, 250}));
+  platform->registerComponent(new CollisionComponent());
+  game->registerGameObject(platform);
+
+  auto *player = new GameObject({0, -100});
   player->registerComponent(new TextureComponent("avatar.png"));
   player->registerComponent(new NavigationComponent());
   player->registerComponent(new CollisionComponent());

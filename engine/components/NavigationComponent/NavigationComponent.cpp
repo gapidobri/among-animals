@@ -15,7 +15,7 @@ void NavigationComponent::loop() {
   std::map<int, bool> keys = game->getKeys();
 
   // TODO: Check floor collision
-  if (gameObject->getPosition().y >= 300 || collisionComponent->isColliding()) {
+  if (collisionComponent->isColliding()) {
     if (keys[SDLK_SPACE])
       physicsComponent->setForceY(-15);
   }

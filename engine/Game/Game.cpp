@@ -5,6 +5,12 @@
 #include <SDL2/SDL_ttf.h>
 #include <sstream>
 
+Game::Game() = default;
+
+Game::Game(Size size) {
+  this->windowSize = size;
+}
+
 void Game::start() {
 
   // Initialize SDL
@@ -12,8 +18,8 @@ void Game::start() {
   TTF_Init();
 
   // Create Window
-  sdlWindow = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED,
-                               SDL_WINDOWPOS_UNDEFINED, 1000, 650, SDL_WINDOW_OPENGL);
+  sdlWindow = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowSize.width,
+                               windowSize.height, SDL_WINDOW_OPENGL);
 
   // Create Renderer
   sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
@@ -55,7 +61,7 @@ void Game::start() {
 
       b = a;
 
-      SDL_SetRenderDrawColor(sdlRenderer, 100, 100, 100, 255);
+      SDL_SetRenderDrawColor(sdlRenderer, 55, 68, 110, 255);
       SDL_RenderClear(sdlRenderer);
 
       loopGameObjects();
@@ -63,7 +69,7 @@ void Game::start() {
       std::stringstream strs;
       strs << "FPS: " << 1000 / delta;
       TTF_Font *roboto = TTF_OpenFont("../assets/Roboto.ttf", 24);
-      SDL_Surface *textSurface = TTF_RenderText_Solid(roboto, (char*) strs.str().c_str(), {0, 255, 0});
+      SDL_Surface *textSurface = TTF_RenderText_Solid(roboto, (char *) strs.str().c_str(), {0, 255, 0});
 
       SDL_Texture *textTexture = SDL_CreateTextureFromSurface(sdlRenderer, textSurface);
       SDL_Rect r{10, 10, 70, 20};
@@ -113,15 +119,6 @@ void Game::registerGameObject(GameObject *gameObject) {
   }
 }
 
-void Game::registerCamera(GameObject *gameObject) {
-  auto *cameraComponent = gameObject->getComponentOfType<CameraComponent>();
-  if (!cameraComponent) {
-    std::cout << "This game object doesn't have a camera component";
-    return;
-  }
-  camera = gameObject;
-}
-
 void Game::setupGameObjects() {
   for (auto &gameObject: gameObjects)
     gameObject->setup();
@@ -137,7 +134,9 @@ SDL_Renderer *Game::getRenderer() {
 }
 
 Position Game::getCameraPosition() {
-  return camera->position;
+  Position position = camera->position;
+  position.x += 200;
+  return position;
 }
 
 void Game::setCameraPosition(Position position) {
@@ -154,4 +153,8 @@ std::map<int, bool> Game::getKeys() {
 
 std::vector<GameObject *> Game::getGameObjects() {
   return gameObjects;
+}
+
+Size Game::getWindowSize() {
+  return windowSize;
 }
