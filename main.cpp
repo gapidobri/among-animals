@@ -13,18 +13,20 @@ int main() {
 
   auto *game = new Game();
 
-  auto *background = new GameObject();
-  background->registerComponent(new TextureComponent("background.jpeg"));
-  background->setSize(Size{200, 200});
-  game->registerGameObject(background);
+//  auto *background = new GameObject(0, 400);
+//  background->registerComponent(new TextureComponent("background.jpeg", true));
+//  game->registerGameObject(background);
 
-  auto *aiken = new GameObject(100, 100);
-  aiken->registerComponent(new TextureComponent("aiken.png"));
-  aiken->registerComponent(new PhysicsComponent());
-  game->registerGameObject(aiken);
+  for (int i = 0; i < 10; i++) {
+    auto *platform = new GameObject(600 * i, -50 * i + 250);
+    platform->registerComponent(new TextureComponent("floor.png"));
+    platform->registerComponent(new CollisionComponent());
+    platform->registerComponent(new PhysicsComponent(false, 0.5));
+    game->registerGameObject(platform);
+  }
 
   auto *player = new GameObject();
-  player->registerComponent(new TextureComponent("aiken.png"));
+  player->registerComponent(new TextureComponent("avatar.png"));
   player->registerComponent(new NavigationComponent());
   player->registerComponent(new CollisionComponent());
   player->registerComponent(new PhysicsComponent());

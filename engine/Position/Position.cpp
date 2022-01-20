@@ -12,6 +12,11 @@ Position::Position(SDL_Rect rect) {
   y = rect.y;
 }
 
+Position::Position(Size size) {
+  this->x = size.width;
+  this->y = size.height;
+}
+
 Position Position::operator+(Position _pos) const {
   return Position{x + _pos.x, y + _pos.y};
 }

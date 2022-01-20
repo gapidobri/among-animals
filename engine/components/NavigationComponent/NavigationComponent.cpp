@@ -2,6 +2,10 @@
 
 void NavigationComponent::setup() {
   Component::setup();
+
+  physicsComponent = gameObject->getComponentOfType<PhysicsComponent>();
+  collisionComponent = gameObject->getComponentOfType<CollisionComponent>();
+
 }
 
 void NavigationComponent::loop() {
@@ -9,18 +13,17 @@ void NavigationComponent::loop() {
 
   Game *game = gameObject->getGame();
   std::map<int, bool> keys = game->getKeys();
-  Position position = gameObject->getPosition();
+
+  // TODO: Check floor collision
+  if (gameObject->getPosition().y >= 300 || collisionComponent->isColliding()) {
+    if (keys[SDLK_SPACE])
+      physicsComponent->setForceY(-15);
+  }
 
   if (keys[SDLK_LEFT])
-    position.x -= 5;
+    physicsComponent->setForceX(-10);
   if (keys[SDLK_RIGHT])
-    position.x += 5;
-  if (keys[SDLK_UP])
-    position.y -= 5;
-  if (keys[SDLK_DOWN])
-    position.y += 5;
-
-  gameObject->setPosition(position);
+    physicsComponent->setForceX(10);
 
 }
 

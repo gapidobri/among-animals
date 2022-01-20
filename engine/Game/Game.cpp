@@ -2,11 +2,14 @@
 #include "Game.h"
 #include "../GameObject/GameObject.h"
 #include "../components/CameraComponent/CameraComponent.h"
+#include <SDL2/SDL_ttf.h>
+#include <sstream>
 
 void Game::start() {
 
   // Initialize SDL
   SDL_Init(SDL_INIT_VIDEO);
+  TTF_Init();
 
   // Create Window
   sdlWindow = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED,
@@ -52,10 +55,23 @@ void Game::start() {
 
       b = a;
 
-      SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
+      SDL_SetRenderDrawColor(sdlRenderer, 100, 100, 100, 255);
       SDL_RenderClear(sdlRenderer);
 
       loopGameObjects();
+
+      std::stringstream strs;
+      strs << "FPS: " << 1000 / delta;
+      TTF_Font *roboto = TTF_OpenFont("../assets/Roboto.ttf", 24);
+      SDL_Surface *textSurface = TTF_RenderText_Solid(roboto, (char*) strs.str().c_str(), {0, 255, 0});
+
+      SDL_Texture *textTexture = SDL_CreateTextureFromSurface(sdlRenderer, textSurface);
+      SDL_Rect r{10, 10, 70, 20};
+
+      SDL_RenderCopy(sdlRenderer, textTexture, nullptr, &r);
+
+      SDL_FreeSurface(textSurface);
+      SDL_DestroyTexture(textTexture);
 
       SDL_RenderPresent(sdlRenderer);
 

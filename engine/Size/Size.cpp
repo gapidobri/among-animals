@@ -12,3 +12,10 @@ Size::Size(SDL_Rect rect) {
   height = rect.h;
 }
 
+Size Size::operator+(Size _size) const {
+  return {width + _size.width, height + _size.height};
+}
+
+Size Size::operator/(int x) const {
+  return {width / x, height / x};
+}

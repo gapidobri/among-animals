@@ -1,8 +1,11 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include "../Size/Size.h"
 
 struct Position {
+  Position(Size size);
+
   int x{}, y{};
 
 public:

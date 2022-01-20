@@ -1,11 +1,12 @@
 #include "Component.h"
+#include <iostream>
 
 void Component::setup() {
 
 }
 
 void Component::loop() {
-
+  
 }
 
 ComponentType Component::type() {

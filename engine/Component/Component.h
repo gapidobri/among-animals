@@ -10,7 +10,8 @@ enum class ComponentType {
   FixedPositionComponent,
   CameraComponent,
   CollisionComponent,
-  PhysicsComponent
+  PhysicsComponent,
+  TileComponent,
 };
 
 class Component {

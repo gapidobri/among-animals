@@ -6,6 +6,7 @@
 #include "../Position/Position.h"
 #include "../Component/Component.h"
 #include "../Size/Size.h"
+#include "../Bounds/Bounds.h"
 
 class Component;
 
@@ -29,12 +30,15 @@ protected:
 
 public:
   GameObject();
+
   GameObject(int, int);
 
   template<typename T>
   T *getComponentOfType();
 
   Position getPosition();
+
+  Position getCenterPosition();
 
   Position getRenderPosition();
 
@@ -44,9 +48,13 @@ public:
 
   void setSize(Size);
 
+  Bounds getBounds(int inset) const;
+
   Game *getGame();
 
   void registerComponent(Component *);
+
+  std::vector<Component *> getComponents();
 
   friend class Game;
 
