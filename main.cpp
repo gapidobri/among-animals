@@ -28,10 +28,12 @@ int main() {
   floor->registerComponent(new CollisionComponent());
   game->registerGameObject(floor);
 
-  auto *platform = new GameObject(0, 0);
-  platform->registerComponent(new TextureComponent("IndustrialTile_50.png", 1, {100, -100}, {300, 250}));
-  platform->registerComponent(new CollisionComponent());
-  game->registerGameObject(platform);
+  for (int i = 0; i < 15; i++) {
+    auto *platform = new GameObject();
+    platform->registerComponent(new TextureComponent("IndustrialTile_50.png", 1, {400 * i + 100, -100 * i - 150}, {300, 50}));
+    platform->registerComponent(new CollisionComponent());
+    game->registerGameObject(platform);
+  }
 
   auto *player = new GameObject({0, -200});
   player->registerComponent(new TextureComponent("avatar.png"));

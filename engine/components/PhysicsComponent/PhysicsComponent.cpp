@@ -61,8 +61,13 @@ void PhysicsComponent::loop() {
       if (depth.x < depth.y)
         speedX *= -calcBounce;
       else {
-        if (calcBounce == 0.0)
-          collisionDepth = collisionComponent->getCollisionDepthAfter(collision, {(int) speedX, (int) speedY});
+        if (calcBounce == 0.0) {
+            collisionDepth = collisionComponent->getCollisionDepthAfter(collision, {(int) speedX, (int) speedY});
+            if (speedY < 0) {
+              collisionDepth.y += 1;
+              collisionDepth.y *= -1;
+            }
+        }
         else {
           speedY *= -calcBounce;
           speedY += 0.6;
