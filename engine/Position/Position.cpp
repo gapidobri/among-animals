@@ -21,6 +21,12 @@ Position Position::operator+(Position _pos) const {
   return Position{x + _pos.x, y + _pos.y};
 }
 
+void Position::operator+=(Position _pos) {
+  x += _pos.x;
+  y += _pos.y;
+}
+
 Position Position::operator-(Position _pos) const {
   return Position{x - _pos.x, y - _pos.y};
 }
+

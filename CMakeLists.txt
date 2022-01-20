@@ -45,6 +45,8 @@ add_executable(
         engine/components/TileComponent/TileComponent.h
         engine/Bounds/Bounds.cpp
         engine/Bounds/Bounds.h
-        engine/components/BackgroundComponent/BackgroundComponent.cpp engine/components/BackgroundComponent/BackgroundComponent.h)
+        engine/components/BackgroundComponent/BackgroundComponent.cpp
+        engine/components/BackgroundComponent/BackgroundComponent.h
+)
 
 target_link_libraries(among_animals SDL2main SDL2 SDL2_image SDL2_ttf)

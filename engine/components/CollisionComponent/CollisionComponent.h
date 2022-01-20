@@ -5,10 +5,6 @@
 
 class CollisionComponent : public Component {
 
-  std::vector<GameObject *> collisions;
-  std::vector<GameObject *> collisionsX;
-  std::vector<GameObject *> collisionsY;
-
   void setup() override;
 
   void loop() override;
@@ -19,14 +15,12 @@ public:
   ComponentType type() override;
 
   std::vector<GameObject *> getCollisions();
-
-  std::vector<GameObject *> getCollisions(Position offset);
+  std::vector<GameObject *> getCollisionsAfter(Position force);
 
   Position getCollisionDepth(GameObject *target);
-
-  std::vector<GameObject *> getCollisionsX();
-  std::vector<GameObject *> getCollisionsY();
+  Position getCollisionDepthAfter(GameObject *target, Position force);
 
   bool isColliding();
+  bool isCollidingAfter(Position force);
 
 };

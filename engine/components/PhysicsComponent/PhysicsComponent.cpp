@@ -31,31 +31,26 @@ void PhysicsComponent::loop() {
 
   Position position = gameObject->getPosition();
 
-  bool isColliding = collisionComponent != nullptr && collisionComponent->isColliding();
-
-  // Apply friction if object is colliding
-  if (isColliding)
-    speed *= 0.9;
-
   double speedX = speed * std::cos(direction);
   double speedY = speed * std::sin(direction);
 
+  // Gravity
+  speedY += 0.6;
+
   std::vector<GameObject *> collisions;
+  bool isColliding = false;
   if (collisionComponent) {
-    collisions = collisionComponent->getCollisions(Position{(int) speedX, (int) speedY});
+    collisions = collisionComponent->getCollisionsAfter({(int) speedX, (int) speedY});
     isColliding = !collisions.empty();
   }
 
-  // Remove speed if to low
-//  if (speedX < 0.3 && speedX > -0.3)
-//    speedX = 0;
-//
-//  if (speedY < 0.3 && speedY > -0.3)
-//    speedY = 0;
+  Position collisionDepth;
 
-  if (isColliding && collisionComponent) {
+  if (isColliding) {
+    speedX *= 0.9;
 
     for (auto &collision: collisions) {
+
       double calcBounce = bounciness / 2;
       auto *physicsComponent = collision->getComponentOfType<PhysicsComponent>();
       if (physicsComponent)
@@ -66,30 +61,29 @@ void PhysicsComponent::loop() {
       if (depth.x < depth.y)
         speedX *= -calcBounce;
       else {
-        speedY *= -calcBounce;
-        speedY -= 0.6;
+        if (calcBounce == 0.0)
+          collisionDepth = collisionComponent->getCollisionDepthAfter(collision, {(int) speedX, (int) speedY});
+        else {
+          speedY *= -calcBounce;
+          speedY += 0.6;
+        }
       }
+
     }
 
   }
 
-  // Gravity
-  speedY += 0.6;
+  speedY -= collisionDepth.y;
+
+  position += Position((int) speedX, (int) speedY);
 
   speed = std::sqrt(std::pow(speedX, 2) + std::pow(speedY, 2));
 
-  std::cout << speedY << '\n';
-
-  if (speedY == 0) {
-
-    SDL_Rect rect{100, 100, 100, 100};
-    SDL_RenderFillRect(getRenderer(), &rect);
-
-  }
-
   direction = calcDirection(speedX, speedY);
 
-  // DEBUG >>
+  gameObject->setPosition(position);
+
+  // DEBUG
 
   Position renderPosition = gameObject->getRenderPosition();
 
@@ -98,9 +92,7 @@ void PhysicsComponent::loop() {
   SDL_RenderDrawLineF(getRenderer(), (float) renderPosition.x, (float) renderPosition.y,
                       (float) (renderPosition.x + 5 * speedX), (float) (renderPosition.y + 5 * speedY));
 
-  // >> DEBUG
-
-  gameObject->setPosition(position + Position((int) round(speedX), (int) round(speedY)));
+  // DEBUG
 
 }
 
@@ -132,7 +124,7 @@ void PhysicsComponent::applyForce(double _direction, double _speed) {
 
 }
 
-void PhysicsComponent::setForceX(double speedX) {
+void PhysicsComponent::setSpeedX(double speedX) {
 
   double speedY = speed * std::sin(direction);
 
@@ -141,7 +133,7 @@ void PhysicsComponent::setForceX(double speedX) {
 
 }
 
-void PhysicsComponent::setForceY(double speedY) {
+void PhysicsComponent::setSpeedY(double speedY) {
 
   double speedX = speed * std::cos(direction);
 

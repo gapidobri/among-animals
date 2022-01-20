@@ -10,9 +10,12 @@ struct Position {
 
 public:
   Position();
+
   Position(int, int);
+
   explicit Position(SDL_Rect);
 
   Position operator+(Position) const;
+  void operator+=(Position);
   Position operator-(Position) const;
 };

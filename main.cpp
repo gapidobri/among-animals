@@ -29,11 +29,11 @@ int main() {
   game->registerGameObject(floor);
 
   auto *platform = new GameObject(0, 0);
-  platform->registerComponent(new TextureComponent("IndustrialTile_50.png", 1, {200, -200}, {300, 250}));
+  platform->registerComponent(new TextureComponent("IndustrialTile_50.png", 1, {100, -100}, {300, 250}));
   platform->registerComponent(new CollisionComponent());
   game->registerGameObject(platform);
 
-  auto *player = new GameObject({0, -100});
+  auto *player = new GameObject({0, -200});
   player->registerComponent(new TextureComponent("avatar.png"));
   player->registerComponent(new NavigationComponent());
   player->registerComponent(new CollisionComponent());

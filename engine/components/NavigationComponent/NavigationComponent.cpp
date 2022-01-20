@@ -14,16 +14,17 @@ void NavigationComponent::loop() {
   Game *game = gameObject->getGame();
   std::map<int, bool> keys = game->getKeys();
 
-  // TODO: Check floor collision
+  // TODO: Fix collision when bounciness > 0
   if (collisionComponent->isColliding()) {
-    if (keys[SDLK_SPACE])
-      physicsComponent->setForceY(-15);
+    if (keys[SDLK_SPACE]) {
+      physicsComponent->setSpeedY(-15);
+    }
   }
 
   if (keys[SDLK_LEFT])
-    physicsComponent->setForceX(-10);
+    physicsComponent->setSpeedX(-10);
   if (keys[SDLK_RIGHT])
-    physicsComponent->setForceX(10);
+    physicsComponent->setSpeedX(10);
 
 }
 

@@ -19,13 +19,18 @@ class PhysicsComponent : public Component {
 
 public:
   PhysicsComponent();
+
   explicit PhysicsComponent(double bounciness);
+
   explicit PhysicsComponent(bool dynamic);
+
   PhysicsComponent(bool dynamic, double bounciness);
 
   void applyForce(double direction, double speed);
-  void setForceX(double speedX);
-  void setForceY(double speedY);
+
+  void setSpeedX(double speedX);
+
+  void setSpeedY(double speedY);
 
   ComponentType type() override;
 
