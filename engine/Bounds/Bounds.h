@@ -3,8 +3,8 @@
 class Bounds {
 
 public:
-  int minX, maxX, minY, maxY;
+  float minX, maxX, minY, maxY;
 
-  Bounds(int minX, int maxX, int minY, int maxY);
+  Bounds(float minX, float maxX, float minY, float maxY);
 
 };

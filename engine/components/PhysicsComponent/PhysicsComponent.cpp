@@ -1,10 +1,9 @@
 #include "PhysicsComponent.h"
 #include <cmath>
-#include <iostream>
 
 PhysicsComponent::PhysicsComponent() = default;
 
-PhysicsComponent::PhysicsComponent(double bounciness) {
+PhysicsComponent::PhysicsComponent(float bounciness) {
   this->bounciness = bounciness;
 }
 
@@ -12,7 +11,7 @@ PhysicsComponent::PhysicsComponent(bool dynamic) {
   this->dynamic = dynamic;
 }
 
-PhysicsComponent::PhysicsComponent(bool dynamic, double bounciness) {
+PhysicsComponent::PhysicsComponent(bool dynamic, float bounciness) {
   this->bounciness = bounciness;
   this->dynamic = dynamic;
 }
@@ -31,8 +30,8 @@ void PhysicsComponent::loop() {
 
   Position position = gameObject->getPosition();
 
-  double speedX = speed * std::cos(direction);
-  double speedY = speed * std::sin(direction);
+  float speedX = speed * std::cos(direction);
+  float speedY = speed * std::sin(direction);
 
   // Gravity
   speedY += 0.6;
@@ -40,7 +39,7 @@ void PhysicsComponent::loop() {
   std::vector<GameObject *> collisions;
   bool isColliding = false;
   if (collisionComponent) {
-    collisions = collisionComponent->getCollisionsAfter({(int) speedX, (int) speedY});
+    collisions = collisionComponent->getCollisionsAfter({speedX, speedY});
     isColliding = !collisions.empty();
   }
 
@@ -51,7 +50,7 @@ void PhysicsComponent::loop() {
 
     for (auto &collision: collisions) {
 
-      double calcBounce = bounciness / 2;
+      float calcBounce = bounciness / 2;
       auto *physicsComponent = collision->getComponentOfType<PhysicsComponent>();
       if (physicsComponent)
         calcBounce = (bounciness + physicsComponent->bounciness) / 2;
@@ -62,27 +61,36 @@ void PhysicsComponent::loop() {
         speedX *= -calcBounce;
       else {
         if (calcBounce == 0.0) {
-            collisionDepth = collisionComponent->getCollisionDepthAfter(collision, {(int) speedX, (int) speedY});
-            if (speedY < 0) {
-              collisionDepth.y += 1;
-              collisionDepth.y *= -1;
-            }
-        }
-        else {
+          collisionDepth = collisionComponent->getCollisionDepthAfter(collision, {speedX, speedY});
+          if (speedY < 0) {
+            collisionDepth.y += 1.0;
+            collisionDepth.y *= -1.0;
+          }
+        } else {
           speedY *= -calcBounce;
           speedY += 0.6;
         }
       }
-
     }
+  }
 
+  if (!isColliding) {
+
+    if (speedY < -10)
+      gameObject->setState(GameObjectState::JumpingStart);
+    else if (speedY <= 0)
+      gameObject->setState(GameObjectState::Jumping);
+    else if (speedY > 0)
+      gameObject->setState(GameObjectState::FallingStart);
+    else if (speedY > 20)
+      gameObject->setState(GameObjectState::Falling);
   }
 
   speedY -= collisionDepth.y;
 
-  position += Position((int) speedX, (int) speedY);
+  position += Position(speedX, speedY);
 
-  speed = std::sqrt(std::pow(speedX, 2) + std::pow(speedY, 2));
+  speed = std::sqrtf(std::powf(speedX, 2) + std::powf(speedY, 2));
 
   direction = calcDirection(speedX, speedY);
 
@@ -101,11 +109,11 @@ void PhysicsComponent::loop() {
 
 }
 
-double PhysicsComponent::calcDirection(double x, double y) {
+float PhysicsComponent::calcDirection(float x, float y) {
   if (x > 0)
-    return atan(y / x);
+    return atanf(y / x);
   if (x < 0)
-    return atan(y / x) + M_PI;
+    return atanf(y / x) + (float) M_PI;
   if (y > 0)
     return M_PI / 2;
   if (y < 0)
@@ -113,36 +121,36 @@ double PhysicsComponent::calcDirection(double x, double y) {
   return 0;
 }
 
-void PhysicsComponent::applyForce(double _direction, double _speed) {
+void PhysicsComponent::applyForce(float _direction, float _speed) {
 
-  double addSpeedX = _speed * std::cos(_direction);
-  double addSpeedY = _speed * std::sin(_direction);
+  float addSpeedX = _speed * std::cos(_direction);
+  float addSpeedY = _speed * std::sin(_direction);
 
-  double speedX = speed * std::cos(direction);
-  double speedY = speed * std::sin(direction);
+  float speedX = speed * std::cos(direction);
+  float speedY = speed * std::sin(direction);
 
   speedX += addSpeedX;
   speedY -= addSpeedY;
 
-  speed = std::sqrt(std::pow(speedX, 2) + std::pow(speedY, 2));
+  speed = std::sqrtf(std::powf(speedX, 2) + std::powf(speedY, 2));
   direction = calcDirection(speedX, speedY);
 
 }
 
-void PhysicsComponent::setSpeedX(double speedX) {
+void PhysicsComponent::setSpeedX(float speedX) {
 
-  double speedY = speed * std::sin(direction);
+  float speedY = speed * std::sin(direction);
 
-  speed = std::sqrt(std::pow(speedX, 2) + std::pow(speedY, 2));
+  speed = std::sqrtf(std::powf(speedX, 2) + std::powf(speedY, 2));
   direction = calcDirection(speedX, speedY);
 
 }
 
-void PhysicsComponent::setSpeedY(double speedY) {
+void PhysicsComponent::setSpeedY(float speedY) {
 
-  double speedX = speed * std::cos(direction);
+  float speedX = speed * std::cos(direction);
 
-  speed = std::sqrt(std::pow(speedX, 2) + std::pow(speedY, 2));
+  speed = std::sqrtf(std::powf(speedX, 2) + std::powf(speedY, 2));
   direction = calcDirection(speedX, speedY);
 
 }

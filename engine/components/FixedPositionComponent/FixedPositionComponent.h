@@ -7,6 +7,7 @@ class FixedPositionComponent : public Component {
   Position position;
 
   void setup() override;
+
   void loop() override;
 
 public:

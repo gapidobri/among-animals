@@ -4,10 +4,10 @@
 
 class BackgroundComponent : public Component {
 
-  SDL_Texture *texture;
+  SDL_Texture *texture{};
 
   char path[100]{};
-  double z = 1;
+  float z = 1;
 
   void setup() override;
   void loop() override;
@@ -15,7 +15,7 @@ class BackgroundComponent : public Component {
 public:
   explicit BackgroundComponent(const char *filename);
 
-  BackgroundComponent(const char *filename, double z);
+  BackgroundComponent(const char *filename, float z);
 
   ComponentType type() override;
 

@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <SDL2/SDL.h>
+#include "../Size/Size.h"
 #include "../Position/Position.h"
 
 class GameObject;

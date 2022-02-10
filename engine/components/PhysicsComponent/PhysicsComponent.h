@@ -6,7 +6,7 @@
 
 class PhysicsComponent : public Component {
 
-  double speed = 0, direction = 0, bounciness = 0;
+  float speed = 0, direction = 0, bounciness = 0;
   bool dynamic = true;
 
   CollisionComponent *collisionComponent{};
@@ -15,22 +15,22 @@ class PhysicsComponent : public Component {
 
   void loop() override;
 
-  static double calcDirection(double, double);
+  static float calcDirection(float, float);
 
 public:
   PhysicsComponent();
 
-  explicit PhysicsComponent(double bounciness);
+  explicit PhysicsComponent(float bounciness);
 
   explicit PhysicsComponent(bool dynamic);
 
-  PhysicsComponent(bool dynamic, double bounciness);
+  PhysicsComponent(bool dynamic, float bounciness);
 
-  void applyForce(double direction, double speed);
+  void applyForce(float direction, float speed);
 
-  void setSpeedX(double speedX);
+  void setSpeedX(float speedX);
 
-  void setSpeedY(double speedY);
+  void setSpeedY(float speedY);
 
   ComponentType type() override;
 

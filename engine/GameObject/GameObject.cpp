@@ -1,14 +1,14 @@
-#include <iostream>
 #include "GameObject.h"
 #include "../components/CameraComponent/CameraComponent.h"
 #include "../components/PhysicsComponent/PhysicsComponent.h"
+#include "../components/TextureComponent/TextureComponent.h"
 
 GameObject::GameObject() {
   position.x = 0;
   position.y = 0;
 }
 
-GameObject::GameObject(int x, int y) {
+GameObject::GameObject(float x, float y) {
   position.x = x;
   position.y = y;
 }
@@ -27,9 +27,15 @@ void GameObject::loop() {
   for (auto &component: components)
     component->loop();
 
+  // DEBUG
+
   SDL_SetRenderDrawColor(getRenderer(), 0, 255, 0, 255);
-  SDL_Rect r{getRenderPosition().x, getRenderPosition().y, size.width, size.height};
-  SDL_RenderDrawRect(getRenderer(), &r);
+  SDL_FRect r{getRenderPosition().x, getRenderPosition().y, (float) size.width,
+              (float) size.height};
+
+//  SDL_RenderDrawRectF(getRenderer(), &r);
+
+  // DEBUG
 }
 
 Position GameObject::getPosition() {
@@ -59,6 +65,7 @@ void GameObject::templateFix() {
   getComponentOfType<CameraComponent>();
   getComponentOfType<PhysicsComponent>();
   getComponentOfType<CollisionComponent>();
+  getComponentOfType<TextureComponent>();
 }
 
 SDL_Renderer *GameObject::getRenderer() {
@@ -87,8 +94,16 @@ void GameObject::setSize(Size _size) {
   size = _size;
 }
 
-Bounds GameObject::getBounds(int inset) const {
+Bounds GameObject::getBounds(float inset) const {
   return {position.x + inset, position.x + size.width - inset, position.y + inset, position.y + size.height - inset};
+}
+
+GameObjectState GameObject::getState() {
+  return state;
+}
+
+void GameObject::setState(GameObjectState _state) {
+  state = _state;
 }
 
 

@@ -55,10 +55,10 @@ bool CollisionComponent::isCollidingAfter(Position force) {
 Position CollisionComponent::getCollisionDepthAfter(GameObject *target, Position force) {
 
   Position thisCenter = gameObject->getCenterPosition() + force;
-  Size thisHalfSize = gameObject->getSize() / 2;
+  Size thisHalfSize = gameObject->getSize() / 2.0;
 
   Position targetCenter = target->getCenterPosition();
-  Size targetHalfSize = target->getSize() / 2;
+  Size targetHalfSize = target->getSize() / 2.0;
 
   Position diff = thisCenter - targetCenter;
   Position minDist = thisHalfSize + targetHalfSize;

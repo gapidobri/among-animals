@@ -13,13 +13,18 @@ Game::Game(Size size) {
 
 void Game::start() {
 
+  if (camera == nullptr) {
+    std::cout << "No camera component found\n";
+    exit(1);
+  }
+
   // Initialize SDL
   SDL_Init(SDL_INIT_VIDEO);
   TTF_Init();
 
   // Create Window
-  sdlWindow = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowSize.width,
-                               windowSize.height, SDL_WINDOW_OPENGL);
+  sdlWindow = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, (int) windowSize.width,
+                               (int) windowSize.height, SDL_WINDOW_OPENGL);
 
   // Create Renderer
   sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);

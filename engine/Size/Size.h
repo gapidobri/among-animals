@@ -3,16 +3,17 @@
 #include <SDL2/SDL.h>
 
 struct Size {
-  int width{}, height{};
+  float width{}, height{};
 
 public:
   Size();
 
+  Size(float, float);
   Size(int, int);
 
-  explicit Size(SDL_Rect);
+  explicit Size(SDL_FRect);
 
   Size operator+(Size _size) const;
 
-  Size operator/(int x) const;
+  Size operator/(float x) const;
 };

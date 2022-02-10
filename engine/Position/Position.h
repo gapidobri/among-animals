@@ -1,21 +1,22 @@
 #pragma once
 
-#include <SDL2/SDL.h>
 #include "../Size/Size.h"
 
-struct Position {
-  Position(Size size);
-
-  int x{}, y{};
+class Position {
 
 public:
+  float x, y;
+
   Position();
 
-  Position(int, int);
+  Position(Size size);
 
-  explicit Position(SDL_Rect);
+  Position(float x, float y);
 
-  Position operator+(Position) const;
-  void operator+=(Position);
-  Position operator-(Position) const;
+  Position operator+(Position _position) const;
+
+  Position operator-(Position _position) const;
+
+  void operator+=(Position _position);
+
 };

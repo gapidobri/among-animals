@@ -1,15 +1,13 @@
 #include "Position.h"
 
-Position::Position() = default;
-
-Position::Position(int x, int y) {
-  this->x = x;
-  this->y = y;
+Position::Position() {
+  x = 0;
+  y = 0;
 }
 
-Position::Position(SDL_Rect rect) {
-  x = rect.x;
-  y = rect.y;
+Position::Position(float x, float y) {
+  this->x = x;
+  this->y = y;
 }
 
 Position::Position(Size size) {
@@ -17,16 +15,15 @@ Position::Position(Size size) {
   this->y = size.height;
 }
 
-Position Position::operator+(Position _pos) const {
-  return Position{x + _pos.x, y + _pos.y};
+void Position::operator+=(Position _position) {
+  this->x += _position.x;
+  this->y += _position.y;
 }
 
-void Position::operator+=(Position _pos) {
-  x += _pos.x;
-  y += _pos.y;
+Position Position::operator+(Position _position) const {
+  return {this->x + _position.x, this->y + _position.y};
 }
 
-Position Position::operator-(Position _pos) const {
-  return Position{x - _pos.x, y - _pos.y};
+Position Position::operator-(Position _position) const {
+  return {this->x - _position.x, this->y - _position.y};
 }
-

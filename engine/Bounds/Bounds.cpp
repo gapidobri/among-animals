@@ -1,6 +1,6 @@
 #include "Bounds.h"
 
-Bounds::Bounds(int minX, int maxX, int minY, int maxY) {
+Bounds::Bounds(float minX, float maxX, float minY, float maxY) {
   this->minX = minX;
   this->maxX = maxX;
   this->minY = minY;

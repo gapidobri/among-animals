@@ -12,7 +12,6 @@ int main() {
 
   std::cout << "Starting game\n";
 
-
   auto *game = new Game({1280, 720});
 
   auto *background = new GameObject(0, 400);
@@ -30,13 +29,19 @@ int main() {
 
   for (int i = 0; i < 15; i++) {
     auto *platform = new GameObject();
-    platform->registerComponent(new TextureComponent("IndustrialTile_50.png", 1, {400 * i + 100, -100 * i - 150}, {300, 50}));
+    platform->registerComponent(
+        new TextureComponent("IndustrialTile_50.png", 1, {(float) (400.0 * i + 100), (float) (-100.0 * i - 150.0)}, {300, 40}));
     platform->registerComponent(new CollisionComponent());
     game->registerGameObject(platform);
   }
 
   auto *player = new GameObject({0, -200});
-  player->registerComponent(new TextureComponent("avatar.png"));
+  player->registerComponent(new TextureComponent("player/Cyborg_idle.png", 2, true, GameObjectState::Idle));
+  player->registerComponent(new TextureComponent("player/Cyborg_run.png", 2, true, GameObjectState::Moving));
+  player->registerComponent(new TextureComponent("player/Cyborg_jump.png", 2, true, GameObjectState::JumpingStart, 0, 1));
+  player->registerComponent(new TextureComponent("player/Cyborg_jump.png", 2, true, GameObjectState::Jumping, 1, 2));
+  player->registerComponent(new TextureComponent("player/Cyborg_jump.png", 2, true, GameObjectState::FallingStart, 2, 3));
+  player->registerComponent(new TextureComponent("player/Cyborg_jump.png", 2, true, GameObjectState::Falling, 3, 4));
   player->registerComponent(new NavigationComponent());
   player->registerComponent(new CollisionComponent());
   player->registerComponent(new PhysicsComponent());

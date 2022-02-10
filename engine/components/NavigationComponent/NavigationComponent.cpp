@@ -5,6 +5,7 @@ void NavigationComponent::setup() {
 
   physicsComponent = gameObject->getComponentOfType<PhysicsComponent>();
   collisionComponent = gameObject->getComponentOfType<CollisionComponent>();
+  textureComponent = gameObject->getComponentOfType<TextureComponent>();
 
 }
 
@@ -14,6 +15,8 @@ void NavigationComponent::loop() {
   Game *game = gameObject->getGame();
   std::map<int, bool> keys = game->getKeys();
 
+  gameObject->setState(GameObjectState::Idle);
+
   // TODO: Fix collision when bounciness > 0
   if (collisionComponent->isColliding()) {
     if (keys[SDLK_SPACE]) {
@@ -21,10 +24,16 @@ void NavigationComponent::loop() {
     }
   }
 
-  if (keys[SDLK_LEFT])
+  if (keys[SDLK_LEFT]) {
     physicsComponent->setSpeedX(-10);
-  if (keys[SDLK_RIGHT])
+    gameObject->setState(GameObjectState::Moving);
+    textureComponent->setFlipped(true);
+  }
+  if (keys[SDLK_RIGHT]) {
     physicsComponent->setSpeedX(10);
+    gameObject->setState(GameObjectState::Moving);
+    textureComponent->setFlipped(false);
+  }
 
 }
 
