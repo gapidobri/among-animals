@@ -59,7 +59,7 @@ void TextureComponent::setup() {
   SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 
   if (!tile) {
-    gameObject->setSize({ height * scale, height * scale });
+    gameObject->setSize({height * scale, height * scale});
   }
 
   if (animated && startFrame == 0 && endFrame == 0) {
@@ -152,15 +152,12 @@ void TextureComponent::render(float x, float y) {
   if (currentAnimationFrame >= endFrame)
     currentAnimationFrame = startFrame;
 
-  SDL_RenderCopyF(renderer, texture, srcRect, &destRect);
+  SDL_RenderCopyExF(renderer, texture, srcRect, &destRect, 0, nullptr,  gameObject->getFlipped() ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 
-}
-
-void TextureComponent::setFlipped(bool _flipped) {
-  flip = _flipped;
 }
 
 ComponentType TextureComponent::type() {
   return ComponentType::TextureComponent;
 }
+
 

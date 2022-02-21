@@ -106,6 +106,14 @@ void GameObject::setState(GameObjectState _state) {
   state = _state;
 }
 
+void GameObject::setFlipped(bool flip) {
+  this->flip = flip;
+}
+
+bool GameObject::getFlipped() {
+  return flip;
+}
+
 
 
 

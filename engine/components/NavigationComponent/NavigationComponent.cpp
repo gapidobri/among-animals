@@ -27,12 +27,12 @@ void NavigationComponent::loop() {
   if (keys[SDLK_LEFT]) {
     physicsComponent->setSpeedX(-10);
     gameObject->setState(GameObjectState::Moving);
-    textureComponent->setFlipped(true);
+    gameObject->setFlipped(true);
   }
   if (keys[SDLK_RIGHT]) {
     physicsComponent->setSpeedX(10);
     gameObject->setState(GameObjectState::Moving);
-    textureComponent->setFlipped(false);
+    gameObject->setFlipped(false);
   }
 
 }

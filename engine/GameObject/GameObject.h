@@ -25,6 +25,7 @@ class GameObject {
 protected:
   Position position;
   Size size;
+  bool flip;
 
   GameObjectState state = GameObjectState::Idle;
 
@@ -56,6 +57,9 @@ public:
   Size getSize();
 
   void setSize(Size);
+
+  void setFlipped(bool flip);
+  bool getFlipped();
 
   Bounds getBounds(float inset) const;
 
