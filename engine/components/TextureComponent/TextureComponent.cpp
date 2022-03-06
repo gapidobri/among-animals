@@ -10,7 +10,7 @@ TextureComponent::TextureComponent(const char *filename) {
   strcat(this->path, filename);
 }
 
-TextureComponent::TextureComponent(const char *filename, int scale, bool animated, GameObjectState state) {
+TextureComponent::TextureComponent(const char *filename, float scale, bool animated, GameObjectState state) {
   strcat(this->path, "../assets/");
   strcat(this->path, filename);
   this->scale = scale;
@@ -18,7 +18,7 @@ TextureComponent::TextureComponent(const char *filename, int scale, bool animate
   this->state = state;
 }
 
-TextureComponent::TextureComponent(const char *filename, int scale, bool animated, GameObjectState state,
+TextureComponent::TextureComponent(const char *filename, float scale, bool animated, GameObjectState state,
                                    int startFrame, int endFrame) {
   strcat(this->path, "../assets/");
   strcat(this->path, filename);
@@ -29,7 +29,7 @@ TextureComponent::TextureComponent(const char *filename, int scale, bool animate
   this->endFrame = endFrame;
 }
 
-TextureComponent::TextureComponent(const char *filename, int scale, Bounds tileBounds) {
+TextureComponent::TextureComponent(const char *filename, float scale, Bounds tileBounds) {
   strcat(this->path, "../assets/");
   strcat(this->path, filename);
   this->scale = scale;
@@ -37,7 +37,7 @@ TextureComponent::TextureComponent(const char *filename, int scale, Bounds tileB
   this->tileBounds = tileBounds;
 }
 
-TextureComponent::TextureComponent(const char *filename, int scale, Position position, Size size) {
+TextureComponent::TextureComponent(const char *filename, float scale, Position position, Size size) {
   strcat(this->path, "../assets/");
   strcat(this->path, filename);
   this->scale = scale;
@@ -55,18 +55,24 @@ void TextureComponent::setup() {
     std::cout << "Texture load failed\n" << IMG_GetError() << '\n';
   }
 
-  int width, height;
-  SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+  int texWidth, texHeight;
+  SDL_QueryTexture(texture, nullptr, nullptr, &texWidth, &texHeight);
+  if (animated) {
+    texWidth /= frameCount;
+  }
+
+  Size size = gameObject->getSize();
 
   if (!tile) {
-    gameObject->setSize({height * scale, height * scale});
+    gameObject->setSize({size.width == 0 ? (float) texWidth * scale - (float) cropLeft - (float) cropRight : size.width,
+                         size.height == 0 ? (float) texHeight * scale - (float) cropTop - (float) cropBottom : size.height});
   }
 
   if (animated && startFrame == 0 && endFrame == 0) {
-    endFrame = (int) (width / height);
+    endFrame = (int) (texWidth / texHeight);
   }
 
-  tileSize = {width, height};
+  tileSize = {texWidth, texHeight};
 }
 
 void TextureComponent::loop() {
@@ -105,11 +111,9 @@ void TextureComponent::loop() {
     float countX = distX / tileSize.width;
     float countY = distY / tileSize.height;
 
-    for (int x = 0; x < (int) countX; x++) {
-      for (int y = 0; y < (int) countY; y++) {
+    for (int x = 0; x < (int) countX; x++)
+      for (int y = 0; y < (int) countY; y++)
         render(renderPosition.x + tileSize.width * (float) x, renderPosition.y + tileSize.height * (float) y);
-      }
-    }
 
     gameObject->setPosition({bounds.minX, bounds.minY});
 
@@ -139,8 +143,10 @@ void TextureComponent::render(float x, float y) {
     destRect = {x, y, size.width, size.height};
 
   if (animated) {
-    srcRect = new SDL_Rect{48 * currentAnimationFrame, 16, 32, 32};
-    destRect = {x, y, size.width, size.height};
+    srcRect = new SDL_Rect{(int) tileSize.width * currentAnimationFrame + cropLeft, cropTop, (int) tileSize.width - cropRight, (int) tileSize.height - cropBottom};
+    destRect = {x, y, (tileSize.width - (float) cropLeft - (float) cropRight) * scale,
+                (tileSize.height - (float) cropTop - (float) cropBottom) * scale};
+//    gameObject->setSize({destRect.w, destRect.h});
   }
 
   currentFrame++;
@@ -152,12 +158,35 @@ void TextureComponent::render(float x, float y) {
   if (currentAnimationFrame >= endFrame)
     currentAnimationFrame = startFrame;
 
-  SDL_RenderCopyExF(renderer, texture, srcRect, &destRect, 0, nullptr,  gameObject->getFlipped() ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+  SDL_RenderCopyExF(renderer, texture, srcRect, &destRect, 0, nullptr,
+                    gameObject->getFlipped() ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 
+}
+
+TextureComponent *TextureComponent::applyCrop(int left, int top, int right, int bottom) {
+  cropLeft = left;
+  cropTop = top;
+  cropRight = right;
+  cropBottom = bottom;
+
+  return this;
+}
+
+TextureComponent *TextureComponent::setScale(float _scale) {
+  this->scale = _scale;
+  return this;
+}
+
+TextureComponent *TextureComponent::setFrameCount(int frames) {
+  this->frameCount = frames;
+  if (!endFrame)
+    endFrame = frameCount;
+  return this;
 }
 
 ComponentType TextureComponent::type() {
   return ComponentType::TextureComponent;
 }
+
 
 

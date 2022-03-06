@@ -56,6 +56,10 @@ void Game::start() {
           handleKeyUpEvent(event);
           break;
 
+        case SDL_MOUSEMOTION:
+          handleMouseMotionEvent(event);
+          break;
+
       }
     }
 
@@ -114,6 +118,10 @@ void Game::handleKeyUpEvent(SDL_Event event) {
   keys[event.key.keysym.sym] = false;
 }
 
+void Game::handleMouseMotionEvent(SDL_Event event) {
+  mousePosition = Position(event.motion.x, event.motion.y);
+}
+
 void Game::registerGameObject(GameObject *gameObject) {
   gameObjects.push_back(gameObject);
   gameObject->game = this;
@@ -162,4 +170,8 @@ std::vector<GameObject *> Game::getGameObjects() {
 
 Size Game::getWindowSize() {
   return windowSize;
+}
+
+Position Game::getMousePosition() {
+  return mousePosition;
 }

@@ -102,8 +102,8 @@ void PhysicsComponent::loop() {
 
   SDL_SetRenderDrawColor(getRenderer(), 0, 255, 0, 255);
 
-  SDL_RenderDrawLineF(getRenderer(), (float) renderPosition.x, (float) renderPosition.y,
-                      (float) (renderPosition.x + 5 * speedX), (float) (renderPosition.y + 5 * speedY));
+//  SDL_RenderDrawLineF(getRenderer(), (float) renderPosition.x, (float) renderPosition.y,
+//                      (float) (renderPosition.x + 5 * speedX), (float) (renderPosition.y + 5 * speedY));
 
   // DEBUG
 

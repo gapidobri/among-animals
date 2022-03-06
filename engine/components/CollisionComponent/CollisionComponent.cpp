@@ -27,8 +27,8 @@ std::vector<GameObject *> CollisionComponent::getCollisionsAfter(Position force)
     auto comp = object->getComponentOfType<CollisionComponent>();
     if (comp) {
 
-      Position bp = object->getPosition();
-      Size bs = object->getSize();
+      auto bp = object->getPosition();
+      auto bs = object->getSize();
 
       bool collX = ap.x + as.width >= bp.x && bp.x + bs.width >= ap.x;
       bool collY = ap.y + as.height >= bp.y && bp.y + bs.height >= ap.y;

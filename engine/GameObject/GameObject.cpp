@@ -1,14 +1,18 @@
+#include <iostream>
+#include <cmath>
 #include "GameObject.h"
 #include "../components/CameraComponent/CameraComponent.h"
 #include "../components/PhysicsComponent/PhysicsComponent.h"
 #include "../components/TextureComponent/TextureComponent.h"
 
 GameObject::GameObject() {
+  flip = false;
   position.x = 0;
   position.y = 0;
 }
 
 GameObject::GameObject(float x, float y) {
+  flip = false;
   position.x = x;
   position.y = y;
 }
@@ -40,6 +44,11 @@ void GameObject::loop() {
 
 Position GameObject::getPosition() {
   return position;
+
+  float xOffset = anchorX == Anchor::Start ? 0 : size.width;
+  float yOffset = anchorY == Anchor::Start ? 0 : size.height;
+
+  return position - Position(xOffset, yOffset);
 }
 
 Position GameObject::getCenterPosition() {
@@ -53,7 +62,9 @@ void GameObject::setPosition(Position _position) {
 Position GameObject::getRenderPosition() {
   Position cameraPosition = game->getCameraPosition();
   Size windowSize = game->getWindowSize();
-  return position - cameraPosition + windowSize / 2;
+  float xOffset = anchorX == Anchor::Start ? 0 : size.width;
+  float yOffset = anchorY == Anchor::Start ? 0 : size.height;
+  return getPosition() - Position{xOffset, yOffset} - cameraPosition + windowSize / 2;
 }
 
 Game *GameObject::getGame() {
@@ -114,6 +125,30 @@ bool GameObject::getFlipped() {
   return flip;
 }
 
+GameObject *GameObject::setAnchor(Anchor x, Anchor y) {
+  this->anchorX = x;
+  this->anchorY = y;
+  return this;
+}
 
+float GameObject::getDistanceTo(GameObject *gameObject) {
+  auto distance = gameObject->position - position;
+  return std::sqrtf(std::powf(distance.x, 2) + std::powf(distance.y, 2));
+}
 
+float GameObject::getAngleTo(GameObject *gameObject) {
+  auto distance = gameObject->position - position;
+  float x = distance.x, y = distance.y;
+  float direction = 0;
 
+  if (x > 0)
+    direction =  atanf(y / x);
+  else if (x < 0)
+    direction = atanf(y / x) + (float) M_PI;
+  else if (y > 0)
+    direction =  M_PI / 2;
+  else if (y < 0)
+    direction = -M_PI / 2;
+
+  return direction;
+}

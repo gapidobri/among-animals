@@ -14,6 +14,7 @@ class Game {
   SDL_Renderer *sdlRenderer{};
 
   Size windowSize = {1000, 650};
+  Position mousePosition;
 
   GameObject *camera{};
   std::vector<GameObject *> gameObjects;
@@ -32,6 +33,8 @@ class Game {
 
   void handleKeyUpEvent(SDL_Event);
 
+  void handleMouseMotionEvent(SDL_Event event);
+
   SDL_Renderer *getRenderer();
 
 public:
@@ -47,6 +50,8 @@ public:
   Position getCameraPosition();
 
   void setCameraPosition(Position position);
+
+  Position getMousePosition();
 
   bool getKey(int);
 

@@ -46,6 +46,6 @@ add_executable(
         engine/components/BackgroundComponent/BackgroundComponent.cpp
         engine/components/BackgroundComponent/BackgroundComponent.h
         engine/Position/Position.cpp engine/Position/Position.h
-)
+        engine/components/ProjectileComponent/ProjectileComponent.cpp engine/components/ProjectileComponent/ProjectileComponent.h engine/components/EnemyComponent/EnemyComponent.cpp engine/components/EnemyComponent/EnemyComponent.h)
 
 target_link_libraries(among_animals SDL2main SDL2 SDL2_image SDL2_ttf)

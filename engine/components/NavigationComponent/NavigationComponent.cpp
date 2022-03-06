@@ -5,7 +5,6 @@ void NavigationComponent::setup() {
 
   physicsComponent = gameObject->getComponentOfType<PhysicsComponent>();
   collisionComponent = gameObject->getComponentOfType<CollisionComponent>();
-  textureComponent = gameObject->getComponentOfType<TextureComponent>();
 
 }
 
@@ -19,17 +18,17 @@ void NavigationComponent::loop() {
 
   // TODO: Fix collision when bounciness > 0
   if (collisionComponent->isColliding()) {
-    if (keys[SDLK_SPACE]) {
+    if (keys[SDLK_SPACE] || keys[SDLK_w]) {
       physicsComponent->setSpeedY(-15);
     }
   }
 
-  if (keys[SDLK_LEFT]) {
+  if (keys[SDLK_LEFT] || keys[SDLK_a]) {
     physicsComponent->setSpeedX(-10);
     gameObject->setState(GameObjectState::Moving);
     gameObject->setFlipped(true);
   }
-  if (keys[SDLK_RIGHT]) {
+  if (keys[SDLK_RIGHT] || keys[SDLK_d]) {
     physicsComponent->setSpeedX(10);
     gameObject->setState(GameObjectState::Moving);
     gameObject->setFlipped(false);

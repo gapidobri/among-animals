@@ -16,6 +16,11 @@ enum GameObjectState {
   Falling,
 };
 
+enum Anchor {
+  Start,
+  End,
+};
+
 class Component;
 
 class GameObject {
@@ -24,6 +29,8 @@ class GameObject {
 
 protected:
   Position position;
+  Anchor anchorX = Anchor::Start, anchorY = Anchor::Start;
+
   Size size;
   bool flip;
 
@@ -72,6 +79,12 @@ public:
   GameObjectState getState();
 
   void setState(GameObjectState state);
+
+  GameObject *setAnchor(Anchor x, Anchor y);
+
+  float getDistanceTo(GameObject *gameObject);
+
+  float getAngleTo(GameObject *gameObject);
 
   friend class Game;
 
