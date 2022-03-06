@@ -158,8 +158,10 @@ void TextureComponent::render(float x, float y) {
   if (currentAnimationFrame >= endFrame)
     currentAnimationFrame = startFrame;
 
-  SDL_RenderCopyExF(renderer, texture, srcRect, &destRect, 0, nullptr,
-                    gameObject->getFlipped() ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+  if (!gameObject->getHidden()) {
+    SDL_RenderCopyExF(renderer, texture, srcRect, &destRect, 0, nullptr,
+                      gameObject->getFlipped() ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+  }
 
 }
 
@@ -187,6 +189,4 @@ TextureComponent *TextureComponent::setFrameCount(int frames) {
 ComponentType TextureComponent::type() {
   return ComponentType::TextureComponent;
 }
-
-
 

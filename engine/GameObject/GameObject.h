@@ -32,7 +32,7 @@ protected:
   Anchor anchorX = Anchor::Start, anchorY = Anchor::Start;
 
   Size size;
-  bool flip;
+  bool flip = false, hidden = false;
 
   GameObjectState state = GameObjectState::Idle;
 
@@ -40,7 +40,6 @@ protected:
   std::vector<Component *> components;
 
   void setup();
-
   void loop();
 
   SDL_Renderer *getRenderer();
@@ -49,6 +48,8 @@ public:
   GameObject();
 
   GameObject(float, float);
+
+  ~GameObject();
 
   template<typename T>
   T *getComponentOfType();
@@ -74,6 +75,8 @@ public:
 
   void registerComponent(Component *);
 
+  void removeComponent(Component *);
+
   std::vector<Component *> getComponents();
 
   GameObjectState getState();
@@ -85,6 +88,9 @@ public:
   float getDistanceTo(GameObject *gameObject);
 
   float getAngleTo(GameObject *gameObject);
+
+  void setHidden(bool hidden);
+  bool getHidden();
 
   friend class Game;
 

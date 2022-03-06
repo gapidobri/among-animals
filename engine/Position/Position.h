@@ -19,4 +19,6 @@ public:
 
   void operator+=(Position _position);
 
+  void operator-=(Position _position);
+
 };

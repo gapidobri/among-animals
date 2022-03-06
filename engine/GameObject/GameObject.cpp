@@ -4,18 +4,24 @@
 #include "../components/CameraComponent/CameraComponent.h"
 #include "../components/PhysicsComponent/PhysicsComponent.h"
 #include "../components/TextureComponent/TextureComponent.h"
+#include "../components/PlayerComponent/PlayerComponent.h"
 
 GameObject::GameObject() {
-  flip = false;
   position.x = 0;
   position.y = 0;
 }
 
 GameObject::GameObject(float x, float y) {
-  flip = false;
   position.x = x;
   position.y = y;
 }
+
+GameObject::~GameObject() {
+  for (auto const &component : components) {
+    delete component;
+  }
+}
+
 
 void GameObject::registerComponent(Component *component) {
   component->gameObject = this;
@@ -77,6 +83,7 @@ void GameObject::templateFix() {
   getComponentOfType<PhysicsComponent>();
   getComponentOfType<CollisionComponent>();
   getComponentOfType<TextureComponent>();
+  getComponentOfType<PlayerComponent>();
 }
 
 SDL_Renderer *GameObject::getRenderer() {
@@ -142,13 +149,21 @@ float GameObject::getAngleTo(GameObject *gameObject) {
   float direction = 0;
 
   if (x > 0)
-    direction =  atanf(y / x);
+    direction = atanf(y / x);
   else if (x < 0)
     direction = atanf(y / x) + (float) M_PI;
   else if (y > 0)
-    direction =  M_PI / 2;
+    direction = M_PI / 2;
   else if (y < 0)
     direction = -M_PI / 2;
 
   return direction;
+}
+
+void GameObject::setHidden(bool hidden) {
+  this->hidden = hidden;
+}
+
+bool GameObject::getHidden() {
+  return hidden;
 }

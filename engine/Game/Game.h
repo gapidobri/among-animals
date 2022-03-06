@@ -25,7 +25,10 @@ class Game {
 
   void loopGameObjects();
 
-  bool quit{};
+  bool closeW = false;
+  bool quit = false;
+  bool isPaused = false;
+  bool clean = false;
 
   void handleWindowEvent(SDL_Event);
 
@@ -43,9 +46,23 @@ public:
 
   explicit Game(Size size);
 
+  std::function<void()> onEndLevelCallback;
+
   void start();
 
+  void pause();
+
+  void resume();
+
+  void end(bool exit);
+
+  void removeAllGameObjects();
+
   void registerGameObject(GameObject *);
+
+  void removeGameObject(GameObject *);
+
+  void onEndLevel(std::function<void()> callback);
 
   Position getCameraPosition();
 

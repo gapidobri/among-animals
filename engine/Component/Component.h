@@ -14,6 +14,7 @@ enum class ComponentType {
   TileComponent,
   BackgroundComponent,
   ProjectileComponent,
+  PlayerComponent,
 };
 
 class Component {

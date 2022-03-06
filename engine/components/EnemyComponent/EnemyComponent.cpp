@@ -6,10 +6,19 @@ void EnemyComponent::setup() {
 
   availableStates.push_back(Idle);
   availableStates.push_back(Moving);
+
+  collisionComponent = gameObject->getComponentOfType<CollisionComponent>();
+  targetPlayerComponent = target->getComponentOfType<PlayerComponent>();
 }
 
 void EnemyComponent::loop() {
   Component::loop();
+
+  auto collisions = collisionComponent->getCollisions();
+  bool isColliding = std::find(collisions.begin(), collisions.end(), target) != collisions.end();
+  if (isColliding) {
+    targetPlayerComponent->damage();
+  }
 
   auto currentState = gameObject->getState();
 
@@ -21,7 +30,7 @@ void EnemyComponent::loop() {
 
     if (randomState == Moving) {
       movementSpeed = (float) (random() % 10) - 5;
-        gameObject->setFlipped(movementSpeed < 0);
+      gameObject->setFlipped(movementSpeed < 0);
     }
 
     // Set random state timeout

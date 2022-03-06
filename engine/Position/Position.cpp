@@ -27,3 +27,8 @@ Position Position::operator+(Position _position) const {
 Position Position::operator-(Position _position) const {
   return {this->x - _position.x, this->y - _position.y};
 }
+
+void Position::operator-=(Position _position) {
+  this->x -= _position.x;
+  this->y -= _position.y;
+}

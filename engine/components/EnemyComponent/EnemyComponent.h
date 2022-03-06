@@ -2,6 +2,7 @@
 
 #include "../../Component/Component.h"
 #include "../PhysicsComponent/PhysicsComponent.h"
+#include "../PlayerComponent/PlayerComponent.h"
 
 class EnemyComponent : public Component {
 
@@ -15,6 +16,9 @@ class EnemyComponent : public Component {
   void loop() override;
 
   GameObjectState getRandomState();
+
+  CollisionComponent *collisionComponent = nullptr;
+  PlayerComponent *targetPlayerComponent = nullptr;
 
 public:
 

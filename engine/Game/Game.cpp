@@ -4,6 +4,7 @@
 #include "../components/CameraComponent/CameraComponent.h"
 #include <SDL2/SDL_ttf.h>
 #include <sstream>
+#include <utility>
 
 Game::Game() = default;
 
@@ -35,12 +36,11 @@ void Game::start() {
 
   setupGameObjects();
 
-  quit = false;
   SDL_Event event;
 
   Uint32 a, b, delta;
 
-  while (!quit) {
+  while (!closeW) {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
 
@@ -66,7 +66,7 @@ void Game::start() {
     a = SDL_GetTicks();
     delta = a - b;
 
-    if (delta > 1000 / 60.0) {
+    if (delta > 1000 / 60.0 && !isPaused) {
 
       b = a;
 
@@ -74,6 +74,8 @@ void Game::start() {
       SDL_RenderClear(sdlRenderer);
 
       loopGameObjects();
+
+      std::cout << gameObjects.size() << '\n';
 
       std::stringstream strs;
       strs << "FPS: " << 1000 / delta;
@@ -98,12 +100,16 @@ void Game::start() {
   SDL_DestroyWindow(sdlWindow);
   SDL_Quit();
 
+  if (quit) {
+    exit(0);
+  }
+
 }
 
 void Game::handleWindowEvent(SDL_Event event) {
   switch (event.window.event) {
     case SDL_WINDOWEVENT_CLOSE:
-      std::cout << "Exiting game\n";
+      closeW = true;
       quit = true;
       return;
   }
@@ -130,6 +136,11 @@ void Game::registerGameObject(GameObject *gameObject) {
     camera = gameObject;
     return;
   }
+}
+
+void Game::removeGameObject(GameObject *gameObject) {
+  gameObjects.erase(std::remove(gameObjects.begin(), gameObjects.end(), gameObject), gameObjects.end());
+  delete gameObject;
 }
 
 void Game::setupGameObjects() {
@@ -175,3 +186,27 @@ Size Game::getWindowSize() {
 Position Game::getMousePosition() {
   return mousePosition;
 }
+
+void Game::pause() {
+  isPaused = true;
+}
+
+void Game::resume() {
+  isPaused = false;
+}
+
+void Game::end(bool e = false) {
+  closeW = true;
+  if (e)
+    quit = e;
+}
+
+void Game::onEndLevel(std::function<void()> callback) {
+  onEndLevelCallback = std::move(callback);
+}
+
+void Game::removeAllGameObjects() {
+  clean = true;
+}
+
+
