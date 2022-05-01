@@ -9,6 +9,11 @@ void Component::loop() {
   
 }
 
+void Component::end() {
+
+}
+
+
 ComponentType Component::type() {
   return ComponentType::Component;
 }
@@ -16,3 +21,4 @@ ComponentType Component::type() {
 SDL_Renderer *Component::getRenderer() {
   return gameObject->getRenderer();
 }
+

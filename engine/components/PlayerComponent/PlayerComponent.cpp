@@ -39,12 +39,14 @@ void PlayerComponent::loop() {
 
   renderAnimalsCollected();
   renderHealth();
+  renderPoints();
 }
 
 void PlayerComponent::damage() {
   if (godMode == 0) {
     health--;
     godMode = 300;
+    gameObject->getGame()->addPoints(-10);
   }
 }
 
@@ -54,6 +56,7 @@ ComponentType PlayerComponent::type() {
 
 void PlayerComponent::animalCollected() {
   animalsCollected++;
+  gameObject->getGame()->addPoints(50);
 }
 
 void PlayerComponent::renderAnimalsCollected() {
@@ -68,3 +71,8 @@ void PlayerComponent::renderHealth() {
   renderText(getRenderer(), {10, 80}, stringStream.str(), 24);
 }
 
+void PlayerComponent::renderPoints() {
+  std::stringstream stringStream;
+  stringStream << "Tocke: " << gameObject->getGame()->getPoints();
+  renderText(getRenderer(), {10, 110}, stringStream.str(), 24);
+}

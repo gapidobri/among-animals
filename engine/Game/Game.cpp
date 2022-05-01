@@ -75,8 +75,6 @@ void Game::start() {
 
       loopGameObjects();
 
-      std::cout << gameObjects.size() << '\n';
-
       std::stringstream strs;
       strs << "FPS: " << 1000 / delta;
       TTF_Font *roboto = TTF_OpenFont("../assets/Roboto.ttf", 24);
@@ -95,6 +93,8 @@ void Game::start() {
     }
 
   }
+
+  endGameObjects();
 
   // Cleanup
   SDL_DestroyWindow(sdlWindow);
@@ -153,6 +153,12 @@ void Game::loopGameObjects() {
     gameObject->loop();
 }
 
+void Game::endGameObjects() {
+  for (auto &gameObject: gameObjects) {
+    gameObject->end();
+  }
+}
+
 SDL_Renderer *Game::getRenderer() {
   return sdlRenderer;
 }
@@ -209,4 +215,19 @@ void Game::removeAllGameObjects() {
   clean = true;
 }
 
+bool Game::getReplay() const {
+  return replay;
+}
+
+void Game::setReplay(bool replay) {
+  this->replay = replay;
+}
+
+int Game::getPoints() const {
+  return points;
+}
+
+void Game::addPoints(int p) {
+  this->points += p;
+}
 

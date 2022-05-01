@@ -25,10 +25,14 @@ class Game {
 
   void loopGameObjects();
 
+  void endGameObjects();
+
   bool closeW = false;
   bool quit = false;
   bool isPaused = false;
   bool clean = false;
+  bool replay = false;
+  int points = 0;
 
   void handleWindowEvent(SDL_Event);
 
@@ -77,6 +81,14 @@ public:
   std::vector<GameObject *> getGameObjects();
 
   Size getWindowSize();
+
+  bool getReplay() const;
+
+  void setReplay(bool);
+
+  int getPoints() const;
+
+  void addPoints(int);
 
   friend class GameObject;
 

@@ -25,4 +25,5 @@ public:
 
   void renderAnimalsCollected();
   void renderHealth();
+  void renderPoints();
 };

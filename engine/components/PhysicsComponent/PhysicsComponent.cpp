@@ -1,5 +1,6 @@
 #include "PhysicsComponent.h"
 #include <cmath>
+#include <iostream>
 
 PhysicsComponent::PhysicsComponent() = default;
 
@@ -20,7 +21,21 @@ PhysicsComponent::PhysicsComponent(bool dynamic, float bounciness) {
 void PhysicsComponent::setup() {
   Component::setup();
 
+  if (gameObject->getGame()->getReplay()) {
+    ifstream.open("player.bin", std::ios::binary);
+  } else {
+    ofstream.open("player.bin", std::ios::binary);
+  }
+
   collisionComponent = gameObject->getComponentOfType<CollisionComponent>();
+}
+
+void PhysicsComponent::end() {
+  if (gameObject->getGame()->getReplay()) {
+    ifstream.close();
+  } else {
+    ofstream.close();
+  }
 }
 
 void PhysicsComponent::loop() {
@@ -106,6 +121,19 @@ void PhysicsComponent::loop() {
 //                      (float) (renderPosition.x + 5 * speedX), (float) (renderPosition.y + 5 * speedY));
 
   // DEBUG
+
+//  std::cout << speed << ", " << direction << '\n';
+
+  State state{speed, direction, gameObject->getFlipped()};
+
+  if (gameObject->getGame()->getReplay()) {
+    ifstream.read((char *) &state, sizeof(State));
+    speed = state.speed;
+    direction = state.direction;
+    gameObject->setFlipped(state.flip);
+  } else {
+    ofstream.write((char *) &state, sizeof(State));
+  }
 
 }
 

@@ -6,6 +6,7 @@
 #include "../Component/Component.h"
 #include "../Size/Size.h"
 #include "../Bounds/Bounds.h"
+#include <fstream>
 
 enum GameObjectState {
   Idle,
@@ -39,8 +40,15 @@ protected:
   Game *game = nullptr;
   std::vector<Component *> components;
 
+  bool record = false;
+
+  char *name{};
+  std::ofstream ofstream;
+  std::ifstream ifstream;
+
   void setup();
   void loop();
+  void end();
 
   SDL_Renderer *getRenderer();
 
@@ -91,6 +99,9 @@ public:
 
   void setHidden(bool hidden);
   bool getHidden();
+
+  void setName(char *name);
+  void setRecord(bool record);
 
   friend class Game;
 

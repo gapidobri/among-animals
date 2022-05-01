@@ -1,4 +1,3 @@
-#include <iostream>
 #include "engine/GameObject/GameObject.h"
 #include "engine/Game/Game.h"
 #include "engine/components/TextureComponent/TextureComponent.h"
@@ -10,8 +9,15 @@
 #include "engine/components/EnemyComponent/EnemyComponent.h"
 #include "engine/components/AnimalComponent/AnimalComponent.h"
 #include "engine/components/PlayerComponent/PlayerComponent.h"
+#include "engine/components/MenuComponent/MenuComponent.h"
+#include "engine/components/ScoreboardComponent/ScoreboardComponent.h"
+#include <iostream>
+#include <fstream>
 
 Game *game = nullptr;
+
+int startMenu();
+void startScoreboard();
 
 void startLevel(int enemies, int animals);
 
@@ -26,18 +32,85 @@ int main() {
   std::srand(time(nullptr));
 
   game = new Game({1280, 720});
-  startLevel(5, 3);
-  game->start();
+  int selected = startMenu();
+  int points = 0;
+  std::string name;
+  std::ofstream scoreboardFile;
 
-  game = new Game({1280, 720});
-  startLevel(10, 5);
-  game->start();
+  switch (selected) {
+    case 0:
+      std::cout << "Vpisi svoje ime: ";
+      std::getline(std::cin, name);
 
-  game = new Game({1280, 720});
-  startLevel(15, 8);
-  game->start();
+      game = new Game({1280, 720});
+      startLevel(5, 3);
+      game->start();
+      points += game->getPoints();
+
+      game = new Game({1280, 720});
+      startLevel(10, 5);
+      game->start();
+      points += game->getPoints();
+
+      game = new Game({1280, 720});
+      startLevel(15, 8);
+      game->start();
+      points += game->getPoints();
+
+      scoreboardFile.open("scoreboard.txt");
+      scoreboardFile << name << " " << points << '\n';
+      scoreboardFile.close();
+
+      break;
+
+    case 1:
+
+      startScoreboard();
+
+      break;
+
+    case 2:
+      game = new Game({1280, 720});
+      startLevel(5, 3);
+      game->setReplay(true);
+      game->start();
+      break;
+
+  }
+
 
   return 0;
+}
+
+int startMenu() {
+
+  auto *gameObject = new GameObject();
+
+  auto *cameraComponent = new CameraComponent();
+  gameObject->registerComponent(cameraComponent);
+  auto *menuComponent = new MenuComponent();
+  gameObject->registerComponent(menuComponent);
+
+  game->registerGameObject(gameObject);
+  game->start();
+
+  return menuComponent->selected;
+
+}
+
+void startScoreboard() {
+
+  game = new Game({1280, 720});
+  auto *gameObject = new GameObject();
+
+  auto *cameraComponent = new CameraComponent();
+  gameObject->registerComponent(cameraComponent);
+  auto *scoreboardComponent = new ScoreboardComponent();
+  gameObject->registerComponent(scoreboardComponent);
+
+  game->registerGameObject(gameObject);
+  game->start();
+
 }
 
 void startLevel(int enemies, int animals) {

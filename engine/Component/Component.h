@@ -15,6 +15,7 @@ enum class ComponentType {
   BackgroundComponent,
   ProjectileComponent,
   PlayerComponent,
+  MenuComponent,
 };
 
 class Component {
@@ -23,8 +24,8 @@ protected:
   GameObject *gameObject = nullptr;
 
   virtual void setup();
-
   virtual void loop();
+  virtual void end();
 
   SDL_Renderer *getRenderer();
 

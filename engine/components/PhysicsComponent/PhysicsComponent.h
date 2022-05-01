@@ -3,17 +3,21 @@
 #include "../../Component/Component.h"
 #include "../CollisionComponent/CollisionComponent.h"
 #include <chrono>
+#include <fstream>
 
 class PhysicsComponent : public Component {
 
   float speed = 0, direction = 0, bounciness = 0;
   bool dynamic = true;
 
+  std::ofstream ofstream;
+  std::ifstream ifstream;
+
   CollisionComponent *collisionComponent{};
 
   void setup() override;
-
   void loop() override;
+  void end() override;
 
   static float calcDirection(float, float);
 
@@ -34,4 +38,9 @@ public:
 
   ComponentType type() override;
 
+};
+
+struct State {
+  float speed, direction;
+  bool flip;
 };

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(among_animals)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_OSX_SYSROOT "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
 
 include_directories(
         /opt/homebrew/opt/sdl2/include
@@ -56,6 +57,9 @@ add_executable(
         engine/components/PlayerComponent/PlayerComponent.cpp
         engine/components/PlayerComponent/PlayerComponent.h
         engine/utils/textutils.h
-)
+        engine/components/MenuComponent/MenuComponent.cpp
+        engine/components/MenuComponent/MenuComponent.h
+        engine/utils/textutils.cpp
+        engine/components/ScoreboardComponent/ScoreboardComponent.cpp engine/components/ScoreboardComponent/ScoreboardComponent.h)
 
 target_link_libraries(among_animals SDL2main SDL2 SDL2_image SDL2_ttf)

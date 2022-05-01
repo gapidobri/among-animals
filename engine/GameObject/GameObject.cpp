@@ -29,6 +29,9 @@ void GameObject::registerComponent(Component *component) {
 }
 
 void GameObject::setup() {
+  if (record) {
+    ofstream.open(strcat("gameobject_", name), std::ios::binary);
+  }
   for (auto &component: components)
     component->setup();
 }
@@ -46,6 +49,12 @@ void GameObject::loop() {
 //  SDL_RenderDrawRectF(getRenderer(), &r);
 
   // DEBUG
+}
+
+
+void GameObject::end() {
+  for (auto &component: components)
+    component->end();
 }
 
 Position GameObject::getPosition() {
@@ -167,3 +176,12 @@ void GameObject::setHidden(bool hidden) {
 bool GameObject::getHidden() {
   return hidden;
 }
+
+void GameObject::setRecord(bool record) {
+  this->record = record;
+}
+
+void GameObject::setName(char *name) {
+  this->name = name;
+}
+
