@@ -15,6 +15,12 @@ void PlayerComponent::setup() {
 void PlayerComponent::loop() {
   Component::loop();
 
+  if (gameObject->getGame()->getKey(SDLK_ESCAPE)) {
+    auto center = gameObject->getGame()->getWindowSize() / 2;
+    renderText(getRenderer(), {center.width, 50}, "Pavza", 36, true);
+    gameObject->getGame()->pause();
+  }
+
   if (health == 0) {
     auto center = gameObject->getGame()->getWindowSize() / 2;
     renderText(getRenderer(), {center.width, 50}, "Konec igre!", 36, true);

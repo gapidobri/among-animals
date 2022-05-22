@@ -33,6 +33,7 @@ class Game {
   bool clean = false;
   bool replay = false;
   int points = 0;
+  bool pauseSave = false;
 
   void handleWindowEvent(SDL_Event);
 
@@ -53,10 +54,6 @@ public:
   std::function<void()> onEndLevelCallback;
 
   void start();
-
-  void pause();
-
-  void resume();
 
   void end(bool exit);
 
@@ -89,6 +86,10 @@ public:
   int getPoints() const;
 
   void addPoints(int);
+
+  void setPause(bool);
+
+  void pause();
 
   friend class GameObject;
 

@@ -40,6 +40,8 @@ void Game::start() {
 
   Uint32 a, b, delta;
 
+
+
   while (!closeW) {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
@@ -90,6 +92,18 @@ void Game::start() {
 
       SDL_RenderPresent(sdlRenderer);
 
+    }
+
+    if (getKey(13)) {
+      isPaused = false;
+    }
+
+    if (getKey(SDLK_f)) {
+      bool isFullScreen = SDL_GetWindowFlags(sdlWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP;
+      SDL_SetWindowFullscreen(sdlWindow, isFullScreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+      int w, h;
+      SDL_GetWindowSize(sdlWindow, &w, &h);
+      windowSize = {w, h};
     }
 
   }
@@ -197,9 +211,6 @@ void Game::pause() {
   isPaused = true;
 }
 
-void Game::resume() {
-  isPaused = false;
-}
 
 void Game::end(bool e = false) {
   closeW = true;
@@ -231,3 +242,6 @@ void Game::addPoints(int p) {
   this->points += p;
 }
 
+void Game::setPause(bool pauseSave) {
+  this->pauseSave = pauseSave;
+}

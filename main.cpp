@@ -12,7 +12,6 @@
 #include "engine/components/MenuComponent/MenuComponent.h"
 #include "engine/components/ScoreboardComponent/ScoreboardComponent.h"
 #include <iostream>
-#include <fstream>
 
 Game *game = nullptr;
 
@@ -57,7 +56,7 @@ int main() {
       game->start();
       points += game->getPoints();
 
-      scoreboardFile.open("scoreboard.txt");
+      scoreboardFile.open("scoreboard.txt", std::ios::app);
       scoreboardFile << name << " " << points << '\n';
       scoreboardFile.close();
 
@@ -66,18 +65,18 @@ int main() {
     case 1:
 
       startScoreboard();
+      main();
 
       break;
 
     case 2:
       game = new Game({1280, 720});
-      startLevel(5, 3);
+      startLevel(0, 3);
       game->setReplay(true);
       game->start();
       break;
 
   }
-
 
   return 0;
 }
